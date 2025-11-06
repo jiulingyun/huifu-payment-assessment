@@ -176,19 +176,20 @@ python main.py
 ```
 huifu-Assessment/
 ├── keys/                  # 密钥文件目录
-│   ├── private_key.txt    # RSA私钥文件
-│   └── public_key.txt     # RSA公钥文件
+│   ├── private_key.txt    # RSA私钥文件（需自行配置，已加入.gitignore）
+│   ├── public_key.txt     # RSA公钥文件（需自行配置，已加入.gitignore）
+│   └── README.md          # 密钥配置说明
 ├── config.py              # 配置文件（商户信息、密钥读取）
 ├── huifu_sdk_api.py       # 汇付API封装（使用官方SDK）⭐
-├── main.py                # 主程序 ⭐
+├── main.py                # 主程序（支付+退款完整流程）⭐
 ├── refund_only.py         # 单独退款工具
 ├── query_order.py         # 订单查询工具
 ├── setup_config.py        # 配置向导脚本
 ├── test_sign.py           # 签名功能测试脚本
 ├── requirements.txt       # Python依赖包（含SDK）
-├── README.md              # 本文档（完整说明）
-├── NATIVE支付流程说明.md   # NATIVE扫码支付详细说明
-└── 快速开始.md            # 快速开始指南
+├── LICENSE                # MIT开源协议
+├── .gitignore            # Git忽略规则
+└── README.md             # 项目文档（本文件）
 ```
 
 ## 💡 实用工具脚本
