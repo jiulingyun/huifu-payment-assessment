@@ -1,0 +1,7 @@
+requests==2.31.0
+cryptography==41.0.7
+# 汇付官方Python SDK
+dg-sdk==v2.0.10
+# 二维码生成库（用于终端显示）
+qrcode[pil]==7.4.2
+
