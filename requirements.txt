@@ -4,4 +4,6 @@ cryptography==41.0.7
 dg-sdk==v2.0.10
 # 二维码生成库（用于终端显示）
 qrcode[pil]==7.4.2
+# 环境变量文件支持（可选，用于加载 .env 文件）
+python-dotenv==1.0.0
 

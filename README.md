@@ -52,7 +52,78 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. 配置密钥 ⚠️ 重要
+### 2. 配置商户信息（可选）
+
+商户信息可以通过环境变量配置，如果未设置环境变量，将使用默认值。
+
+#### 方式一：使用环境变量（推荐）✨
+
+**方法A：使用 .env 文件（推荐）**
+
+1. 复制示例文件：
+```bash
+# Windows
+copy env.example .env
+
+# Linux/Mac
+cp env.example .env
+```
+
+2. 编辑 `.env` 文件，修改为您的实际值：
+```env
+HUIFU_ID=6666000182573147
+SYS_ID=6666000182558527
+PRODUCT_ID=XLSISV
+USER_ID=1435964137120268288
+```
+
+3. 确保已安装 `python-dotenv`（已包含在 `requirements.txt` 中）：
+```bash
+pip install python-dotenv
+```
+
+> 💡 **注意**：
+> - `.env` 文件已加入 `.gitignore`，不会被提交到版本控制
+> - 如果未安装 `python-dotenv`，程序仍可使用系统环境变量或默认值
+
+**方法B：直接在系统中设置环境变量**
+
+**Windows (PowerShell):**
+```powershell
+$env:HUIFU_ID="6666000182573147"
+$env:SYS_ID="6666000182558527"
+$env:PRODUCT_ID="XLSISV"
+$env:USER_ID="1435964137120268288"
+```
+
+**Windows (CMD):**
+```cmd
+set HUIFU_ID=6666000182573147
+set SYS_ID=6666000182558527
+set PRODUCT_ID=XLSISV
+set USER_ID=1435964137120268288
+```
+
+**Linux/Mac:**
+```bash
+export HUIFU_ID="6666000182573147"
+export SYS_ID="6666000182558527"
+export PRODUCT_ID="XLSISV"
+export USER_ID="1435964137120268288"
+```
+
+#### 方式二：使用默认值
+
+如果不设置环境变量，程序会使用 `config.py` 中的默认值。如需修改默认值，可以直接编辑 `config.py` 文件。
+
+#### 环境变量说明
+
+- `HUIFU_ID`: 商户号
+- `SYS_ID`: 系统号
+- `PRODUCT_ID`: 产品号
+- `USER_ID`: 用户ID（考核要求必须包含在 `req_seq_id` 中）
+
+### 3. 配置密钥 ⚠️ 重要
 
 密钥使用独立文件存储，更安全方便。**支持两种格式，直接粘贴即可！**
 
@@ -127,7 +198,7 @@ python setup_config.py
 > - 公钥是汇付的，用于验证响应
 > - 这是正常的，不是配置错误
 
-### 3. 测试密钥配置
+### 4. 测试密钥配置
 
 配置完成后，测试密钥是否正确：
 ```bash
@@ -136,7 +207,7 @@ python test_sign.py
 
 看到 **✅ 签名验证成功** 表示密钥配置正确，可以继续下一步。
 
-### 4. 运行主程序
+### 5. 运行主程序
 
 ```bash
 python main.py
@@ -179,7 +250,8 @@ huifu-Assessment/
 │   ├── private_key.txt    # RSA私钥文件（需自行配置，已加入.gitignore）
 │   ├── public_key.txt     # RSA公钥文件（需自行配置，已加入.gitignore）
 │   └── README.md          # 密钥配置说明
-├── config.py              # 配置文件（商户信息、密钥读取）
+├── config.py              # 配置文件（商户信息、密钥读取，支持环境变量）
+├── env.example            # 环境变量配置示例文件
 ├── huifu_sdk_api.py       # 汇付API封装（使用官方SDK）⭐
 ├── main.py                # 主程序（支付+退款完整流程）⭐
 ├── refund_only.py         # 单独退款工具
@@ -279,8 +351,6 @@ python query_order.py
   - `party_order_id`: 商户单号（可选）
   - `req_date`: 请求日期（必需）
 
-详见：`NATIVE支付流程说明.md`
-
 ## ⚠️ 注意事项
 
 ### 1. 密钥安全
@@ -305,23 +375,29 @@ source venv/bin/activate
 deactivate
 ```
 
-### 3. 环境选择
+### 3. 商户信息配置
+- 商户信息（`HUIFU_ID`、`SYS_ID`、`PRODUCT_ID`、`USER_ID`）可通过环境变量配置
+- 如果未设置环境变量，程序会使用 `config.py` 中的默认值
+- 推荐使用环境变量方式，便于不同环境切换（测试/生产）
+- 环境变量设置方式见"快速开始"章节
+
+### 4. 环境选择
 - 考核建议使用**测试环境**
 - 确保使用测试商户号和测试账号
 - SDK会自动处理API地址，无需手动配置
 
-### 4. 金额限制
+### 5. 金额限制
 - 支付金额必须 **≥ 1.00 元**（考核要求）
 - 退款金额必须 **> 0** 且 **≤ 原支付金额**
 - 程序会自动验证金额范围
 
-### 5. 流水号格式（重要）
+### 6. 流水号格式（重要）
 - `req_seq_id` 必须包含用户ID: `1435964137120268288`
 - 必须包含请求日期（YYYYMMDD格式）
 - 示例：`1435964137120268288_20251106_500937`
 - ✅ 程序已自动生成符合要求的流水号，无需手动构造
 
-### 6. NATIVE扫码支付流程
+### 7. NATIVE扫码支付流程
 
 1. 调用支付API，获得二维码（`qr_code`）
 2. 程序自动在终端显示二维码
@@ -329,7 +405,7 @@ deactivate
 4. 用户确认支付
 5. 查询订单状态确认支付完成（可选择自动轮询）
 
-### 7. 错误处理
+### 8. 错误处理
 - **签名错误**：检查密钥文件是否完整正确
 - **支付失败**：检查金额是否符合要求、二维码是否正确显示
 - **退款失败**：检查原交易是否成功、退款金额是否超限、是否提供了原交易日期

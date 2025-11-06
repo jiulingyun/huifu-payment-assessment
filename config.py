@@ -5,11 +5,19 @@
 
 import os
 
-# 商户信息
-HUIFU_ID = "6666000109133323"  # 商户号
-SYS_ID = "6666000108840829"  # 系统号
-PRODUCT_ID = "YYZY"  # 产品号
-USER_ID = "1435964137120268288"  # 用户ID
+# 尝试加载 .env 文件（如果存在且安装了 python-dotenv）
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    # 如果没有安装 python-dotenv，跳过（不影响使用系统环境变量）
+    pass
+
+# 商户信息（从环境变量读取，如果未设置则使用默认值）
+HUIFU_ID = os.getenv("HUIFU_ID", "")  # 商户号
+SYS_ID = os.getenv("SYS_ID", "")  # 系统号
+PRODUCT_ID = os.getenv("PRODUCT_ID", "")  # 产品号
+USER_ID = os.getenv("USER_ID", "")  # 用户ID
 
 # 密钥文件路径
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
